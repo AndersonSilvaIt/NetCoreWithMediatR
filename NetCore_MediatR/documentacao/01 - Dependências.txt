@@ -1,0 +1,5 @@
+install-package MediatR
+
+para criar a injeção de dependência do mediatR
+
+install-package MediatR.Extensions.Microsoft.DependencyInjection
