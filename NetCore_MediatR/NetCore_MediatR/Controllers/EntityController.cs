@@ -20,6 +20,18 @@ namespace NetCore_MediatR.Controllers
             this._repository = repository;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _repository.GetAll());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            return Ok(await _repository.Get(id));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(CreateEntityCommand command)
         {
@@ -32,6 +44,14 @@ namespace NetCore_MediatR.Controllers
         {
             var response = await _mediator.Send(command);
             return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var obj = new DeleteEntityCommand { Id = id };
+            var result = await _mediator.Send(obj);
+            return Ok(result);
         }
     }
 }
