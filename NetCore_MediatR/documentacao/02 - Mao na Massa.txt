@@ -1,0 +1,59 @@
+criado a entydade que irá conter os dados para tratar no banco
+
+CreateEntityCommand
+DeleteEntityCommand
+AlterEntityCommand
+
+essa entidade irá simular a Model
+com as mesmas propriedades
+
+eles precisam Herdar da Interface IRequest<T>
+
+Na controller, o mediatR envia o comando para o local responsável...
+
+
+        [HttpPost]
+        public async Task<IActionResult> Post(CreateEntityCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+		
+
+o C# irá buscar uma classe que implemente a interface IRequestHandler<CreateEntityCommandHandler>
+no caso, a classe CreateEntityCommandHandler.cs
+
+
+        public async Task<string> Handle(CreateEntityCommand request, CancellationToken cancellationToken)
+        {
+            var entity = new Entity { Name = request.Name, Age = request.Age};
+
+            try
+            {
+                entity = await _repository.Add(entity);
+
+                await _mediator.Publish(new EntityCreatedNotification { Id = entity.Id, Name = entity.Name, Age = entity.Age });
+
+                return await Task.FromResult("Entity Created Success !!!");
+            }
+            catch (Exception ex)
+            {
+                await _mediator.Publish(new EntityCreatedNotification { Id = entity.Id, Name = entity.Name, Age = entity.Age });
+                await _mediator.Publish(new ErroNotification { Exception = ex.Message, QueueError = ex.StackTrace });
+                return await Task.FromResult("Error ocurr to Created Entity !");
+            }
+        }
+	
+a pós adicionar a entidade, é possível gerar alguns Logs, ou algum outro evento, no caso estou usando notificações
+	
+criado a classe que irá implementar os Handlers das notificações
+
+LogEventHandler 
+
+        public Task Handle(EntityCreatedNotification notification, CancellationToken cancellationToken)
+        {
+            return Task.Run(() =>
+            {
+                Console.WriteLine($"CRIACAO: '{notification.Id} - {notification.Name} - {notification.Age}");
+            });
+        }

@@ -7,35 +7,40 @@ namespace NetCore_MediatR.Repositories
 {
     public class EntityRepository : IRepository<Entity>
     {
-        private static Dictionary<int, Entity> pessoas = new Dictionary<int, Entity>();
+        private static Dictionary<int, Entity> entitys = new Dictionary<int, Entity>();
 
         public async Task<IEnumerable<Entity>> GetAll()
         {
-            return await Task.Run(() => pessoas.Values.ToList());
+            return await Task.Run(() => entitys.Values.ToList());
         }
 
         public async Task<Entity> Get(int id)
         {
-            return await Task.Run(() => pessoas.GetValueOrDefault(id));
+            return await Task.Run(() => entitys.GetValueOrDefault(id));
         }
 
-        public async Task Add(Entity pessoa)
+        public async Task<Entity> Add(Entity entity)
         {
-            await Task.Run(() => pessoas.Add(pessoa.Id, pessoa));
+            return await Task.Run(() => {
+                var id = entitys.Count() + 1;
+                entity.Id = id;
+                entitys.Add(id, entity);
+                return entity;
+            });
         }
 
-        public async Task Edit(Entity pessoa)
+        public async Task Edit(Entity entity)
         {
             await Task.Run(() =>
             {
-                pessoas.Remove(pessoa.Id);
-                pessoas.Add(pessoa.Id, pessoa);
+                entitys.Remove(entity.Id);
+                entitys.Add(entity.Id, entity);
             });
         }
 
         public async Task Delete(int id)
         {
-            await Task.Run(() => pessoas.Remove(id));
+            await Task.Run(() => entitys.Remove(id));
         }
     }
 }

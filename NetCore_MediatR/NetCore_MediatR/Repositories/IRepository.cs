@@ -9,7 +9,7 @@ namespace NetCore_MediatR.Repositories
 
         Task<T> Get(int id);
 
-        Task Add(T item);
+        Task<T> Add(T item);
 
         Task Edit(T item);
 
