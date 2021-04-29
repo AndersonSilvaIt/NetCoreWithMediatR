@@ -9,6 +9,7 @@ namespace NetCore_MediatR.Application.EventHandlers
     public class LogEventHandler : 
                                 INotificationHandler<EntityCreatedNotification>,
                                 INotificationHandler<EntityAlteredNotification>,
+                                INotificationHandler<EntityDeletedNotification>,
                                 INotificationHandler<ErroNotification>
     {
         public Task Handle(EntityCreatedNotification notification, CancellationToken cancellationToken)
@@ -27,14 +28,14 @@ namespace NetCore_MediatR.Application.EventHandlers
              });
          }
 
-        /*
-         public Task Handle(PessoaExcluidaNotification notification, CancellationToken cancellationToken)
+       
+         public Task Handle(EntityDeletedNotification notification, CancellationToken cancellationToken)
          {
              return Task.Run(() =>
              {
-                 Console.WriteLine($"EXCLUSAO: '{notification.Id} - {notification.IsEfetivado}'");
+                 Console.WriteLine($"EXCLUSAO: '{notification.Id} - {notification.IsEfected}'");
              });
-         }*/
+         }
 
         public Task Handle(ErroNotification notification, CancellationToken cancellationToken)
         {
