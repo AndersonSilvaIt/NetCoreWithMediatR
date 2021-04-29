@@ -8,6 +8,7 @@ namespace NetCore_MediatR.Application.EventHandlers
 {
     public class LogEventHandler : 
                                 INotificationHandler<EntityCreatedNotification>,
+                                INotificationHandler<EntityAlteredNotification>,
                                 INotificationHandler<ErroNotification>
     {
         public Task Handle(EntityCreatedNotification notification, CancellationToken cancellationToken)
@@ -18,14 +19,15 @@ namespace NetCore_MediatR.Application.EventHandlers
             });
         }
 
-        /* public Task Handle(PessoaAlteradaNotification notification, CancellationToken cancellationToken)
+         public Task Handle(EntityAlteredNotification notification, CancellationToken cancellationToken)
          {
              return Task.Run(() =>
              {
-                 Console.WriteLine($"ALTERACAO: '{notification.Id} - {notification.Nome} - {notification.Idade} - {notification.Sexo} - {notification.IsEfetivado}'");
+                 Console.WriteLine($"ALTERACAO: '{notification.Id} - {notification.Name} - {notification.Age} - {notification.IsEfected}'");
              });
          }
 
+        /*
          public Task Handle(PessoaExcluidaNotification notification, CancellationToken cancellationToken)
          {
              return Task.Run(() =>

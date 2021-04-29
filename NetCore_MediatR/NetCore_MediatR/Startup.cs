@@ -1,15 +1,11 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using NetCore_MediatR.Application.Models;
+using NetCore_MediatR.Repositories;
 
 namespace NetCore_MediatR
 {
@@ -26,6 +22,8 @@ namespace NetCore_MediatR
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMediatR(typeof(Startup));
+            services.AddSingleton<IRepository<Entity>, EntityRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

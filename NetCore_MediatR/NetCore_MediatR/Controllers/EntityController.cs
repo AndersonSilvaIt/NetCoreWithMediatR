@@ -26,5 +26,12 @@ namespace NetCore_MediatR.Controllers
             var response = await _mediator.Send(command);
             return Ok(response);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(AlterEntityCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
     }
 }
